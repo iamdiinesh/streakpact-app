@@ -14,10 +14,10 @@ export default function MonthlyBadgesScreen({ onNavigate }: MonthlyBadgesScreenP
   
   // Calculate item width for 3 columns with gap
   const numColumns = 3;
-  const paddingHorizontal = 20;
+  const paddingHorizontal = 24; // Must match scrollContent padding!
   const gap = 12;
   const availableWidth = width - (paddingHorizontal * 2) - (gap * (numColumns - 1));
-  const itemWidth = Math.floor(availableWidth / numColumns);
+  const itemWidth = Math.floor(availableWidth / numColumns) - 1; // -1 to prevent float rounding wraps
 
   // Dynamic badge sizing so it perfectly fits 3 columns even on smaller phones
   const badgeSize = Math.min(96, itemWidth);
