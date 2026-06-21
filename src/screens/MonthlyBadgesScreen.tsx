@@ -14,10 +14,15 @@ export default function MonthlyBadgesScreen({ onNavigate }: MonthlyBadgesScreenP
   
   // Calculate item width for 3 columns with gap
   const numColumns = 3;
-  const paddingHorizontal = 24;
-  const gap = 16;
+  const paddingHorizontal = 20;
+  const gap = 12;
   const availableWidth = width - (paddingHorizontal * 2) - (gap * (numColumns - 1));
-  const itemWidth = availableWidth / numColumns;
+  const itemWidth = Math.floor(availableWidth / numColumns);
+
+  // Dynamic badge sizing so it perfectly fits 3 columns even on smaller phones
+  const badgeSize = Math.min(96, itemWidth);
+  const innerSize = badgeSize * (80/96);
+  const imageSize = innerSize;
 
   // Mock data using custom 3D cartoon character assets
   const badgeData = [
@@ -65,7 +70,7 @@ export default function MonthlyBadgesScreen({ onNavigate }: MonthlyBadgesScreenP
           <View key={group.year} style={styles.yearSection}>
             <Text style={[styles.yearTitle, { color: colors.text }]}>{group.year} Badges</Text>
             
-            <View style={styles.gridContainer}>
+            <View style={[styles.gridContainer, { gap }]}>
               {group.badges.map((badge) => {
                 const isAchieved = badge.achieved;
                 
@@ -82,25 +87,33 @@ export default function MonthlyBadgesScreen({ onNavigate }: MonthlyBadgesScreenP
                       {
                         backgroundColor: badgeColor,
                         borderColor: badgeBorder,
+                        width: badgeSize,
+                        height: badgeSize,
+                        borderRadius: badgeSize / 2,
                       }
                     ]}>
                       
                       {/* Inner colorful circle */}
                       <View style={[
                         styles.badgeInner,
-                        { backgroundColor: badgeColor }
+                        { 
+                          backgroundColor: badgeColor,
+                          width: innerSize,
+                          height: innerSize,
+                          borderRadius: innerSize / 2,
+                        }
                       ]}>
                         
                         {/* 3D Glass Glare (Only show if achieved to make it pop) */}
                         {isAchieved && <View style={styles.glare} />}
                         
                         {/* Image Illustration */}
-                        <View style={{ zIndex: 10, width: 80, height: 80, alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ zIndex: 10, width: imageSize, height: imageSize, alignItems: 'center', justifyContent: 'center' }}>
                           {isAchieved ? (
-                            <Image source={badge.image} style={{ width: 80, height: 80, transform: [{ scale: 1.6 }] }} resizeMode="cover" />
+                            <Image source={badge.image} style={{ width: imageSize, height: imageSize, transform: [{ scale: 1.6 }] }} resizeMode="cover" />
                           ) : (
-                            <View style={{ opacity: 0.5, filter: 'grayscale(100%)' as any, width: 80, height: 80, alignItems: 'center', justifyContent: 'center' }}>
-                              <Image source={badge.image} style={{ width: 80, height: 80, opacity: 0.2, transform: [{ scale: 1.6 }] }} resizeMode="cover" />
+                            <View style={{ opacity: 0.5, filter: 'grayscale(100%)' as any, width: imageSize, height: imageSize, alignItems: 'center', justifyContent: 'center' }}>
+                              <Image source={badge.image} style={{ width: imageSize, height: imageSize, opacity: 0.2, transform: [{ scale: 1.6 }] }} resizeMode="cover" />
                             </View>
                           )}
                         </View>
@@ -177,16 +190,12 @@ const styles = StyleSheet.create({
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 16,
   },
   gridItem: {
     alignItems: 'center',
     marginBottom: 16,
   },
   badgeOuter: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
@@ -198,9 +207,6 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   badgeInner: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1.5,
