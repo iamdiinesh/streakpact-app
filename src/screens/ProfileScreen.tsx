@@ -5,7 +5,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '../theme/ThemeContext';
 
 interface ProfileScreenProps {
-  onNavigate?: (screen: 'home' | 'profile' | 'settings' | 'editProfile' | 'friends' | 'createPact') => void;
+  onNavigate?: (screen: 'home' | 'profile' | 'settings' | 'editProfile' | 'friends' | 'createPact' | 'achievements') => void;
 }
 
 export default function ProfileScreen({ onNavigate }: ProfileScreenProps) {
@@ -136,7 +136,7 @@ export default function ProfileScreen({ onNavigate }: ProfileScreenProps) {
         <TouchableOpacity style={[styles.fab, { backgroundColor: colors.primary }]} onPress={() => onNavigate && onNavigate('createPact')}>
           <Ionicons name="add" size={28} color={colors.card} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={() => onNavigate && onNavigate('achievements')}>
           <Ionicons name="trophy-outline" size={24} color={colors.textMuted} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>

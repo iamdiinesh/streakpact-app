@@ -6,7 +6,7 @@ import { useTheme } from '../theme/ThemeContext';
 
 
 interface HomeScreenProps {
-  onNavigate?: (screen: 'home' | 'profile' | 'settings' | 'editProfile' | 'friends' | 'createPact' | 'inbox' | 'completed' | 'notifications') => void;
+  onNavigate?: (screen: 'home' | 'profile' | 'settings' | 'editProfile' | 'friends' | 'createPact' | 'inbox' | 'completed' | 'notifications' | 'achievements') => void;
 }
 
 export default function HomeScreen({ onNavigate }: HomeScreenProps) {
@@ -170,7 +170,7 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
           <Ionicons name="add" size={28} color={colors.card} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={() => onNavigate && onNavigate('achievements')}>
           <Ionicons name="trophy-outline" size={24} color={colors.textMuted} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem} onPress={() => onNavigate && onNavigate('profile')}>

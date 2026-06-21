@@ -14,10 +14,12 @@ import CreatePactScreen from './src/screens/CreatePactScreen';
 import InboxScreen from './src/screens/InboxScreen';
 import CompletedPactsScreen from './src/screens/CompletedPactsScreen';
 import NotificationsScreen from './src/screens/NotificationsScreen';
+import AchievementsScreen from './src/screens/AchievementsScreen';
+import MonthlyBadgesScreen from './src/screens/MonthlyBadgesScreen';
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentScreen, setCurrentScreen] = useState<'home' | 'profile' | 'settings' | 'feedback' | 'contact' | 'privacy' | 'terms' | 'editProfile' | 'friends' | 'createPact' | 'inbox' | 'completed' | 'notifications'>('home');
+  const [currentScreen, setCurrentScreen] = useState<'home' | 'profile' | 'settings' | 'feedback' | 'contact' | 'privacy' | 'terms' | 'editProfile' | 'friends' | 'createPact' | 'inbox' | 'completed' | 'notifications' | 'achievements' | 'monthlyBadges'>('home');
 
   if (!isLoggedIn) {
     return <LoginScreen onLogin={() => setIsLoggedIn(true)} />;
@@ -69,6 +71,14 @@ function AppContent() {
 
   if (currentScreen === 'notifications') {
     return <NotificationsScreen onNavigate={setCurrentScreen} />;
+  }
+
+  if (currentScreen === 'achievements') {
+    return <AchievementsScreen onNavigate={setCurrentScreen} />;
+  }
+
+  if (currentScreen === 'monthlyBadges') {
+    return <MonthlyBadgesScreen onNavigate={setCurrentScreen} />;
   }
 
   return <HomeScreen onNavigate={setCurrentScreen} />;
