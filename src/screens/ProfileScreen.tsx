@@ -45,9 +45,15 @@ export default function ProfileScreen({ onNavigate }: ProfileScreenProps) {
               <Ionicons name="copy-outline" size={12} color={colors.textSecondary} style={{ marginLeft: 6 }} />
             </View>
 
-            <View style={styles.birthdayContainer}>
-              <Ionicons name="gift-outline" size={14} color={colors.primary} />
-              <Text style={[styles.birthdayText, { color: colors.primary }]}>Aug 14, 1998</Text>
+            <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
+              <View style={styles.birthdayContainer}>
+                <Ionicons name="gift-outline" size={14} color={colors.primary} />
+                <Text style={[styles.birthdayText, { color: colors.primary }]}>Aug 14, 1998</Text>
+              </View>
+              <View style={styles.birthdayContainer}>
+                <Ionicons name="female" size={14} color={colors.primary} />
+                <Text style={[styles.birthdayText, { color: colors.primary }]}>Female</Text>
+              </View>
             </View>
           </View>
         </View>

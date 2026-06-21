@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Dimensions, Image } from 'react-native';
 import { Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useTheme } from '../theme/ThemeContext';
 
@@ -48,8 +48,12 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
         
         {/* Header Navigation */}
         <View style={styles.headerNav}>
-          <View style={styles.logoCircle}>
-            <Text style={styles.logoText}>S</Text>
+          <View style={{ width: 44, height: 44, borderRadius: 22, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' }}>
+            <Image 
+              source={require('../../assets/logo.png')} 
+              style={{ width: '100%', height: '100%', transform: [{ scale: 1.8 }] }} 
+              resizeMode="cover"
+            />
           </View>
           <View style={styles.headerIcons}>
             <TouchableOpacity style={[styles.iconButton, { backgroundColor: colors.card, shadowColor: theme === 'dark' ? 'transparent' : '#000' }]}>
@@ -65,16 +69,20 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
           </View>
         </View>
 
-        {/* Main Title Area */}
-        <View style={styles.titleContainer}>
-          <Text style={[styles.titleText, { color: colors.text }]}>Let's keep your</Text>
-          <View style={styles.titleRow}>
-            <View style={[styles.badge, { backgroundColor: colors.primaryLight }]}>
-              <Text style={[styles.badgeText, { color: colors.primary }]}>2 pacts</Text>
+        {/* Main Hero Area */}
+        <View style={styles.heroContainer}>
+          <View style={styles.heroContent}>
+            <Text style={[styles.heroGreeting, { color: colors.textSecondary }]}>Welcome back, Marilyn! 👋</Text>
+            <Text style={[styles.heroTitle, { color: colors.text }]}>Let's keep your</Text>
+            <View style={styles.heroRow}>
+              <View style={[styles.heroBadge, { backgroundColor: colors.primaryLight }]}>
+                <Ionicons name="flash" size={16} color={colors.primary} style={{marginRight: 4}} />
+                <Text style={[styles.heroBadgeText, { color: colors.primary }]}>2 PACTS</Text>
+              </View>
+              <Text style={[styles.heroTitle, { color: colors.text }]}> alive! 🔥</Text>
             </View>
-            <Text style={[styles.titleText, { color: colors.text }]}> alive! 🔥</Text>
+            <Text style={[styles.heroSubtitle, { color: colors.textSecondary }]}>Post your proof photos before the daily deadline to protect your streak.</Text>
           </View>
-          <Text style={[styles.subtitleText, { color: colors.textSecondary }]}>Post your proof photos before the daily deadline.</Text>
         </View>
 
         {/* Prominent Task Carousel */}
@@ -233,35 +241,47 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  titleContainer: {
+  heroContainer: {
     marginBottom: 32,
   },
-  titleRow: {
+  heroContent: {
+    position: 'relative',
+    zIndex: 1,
+  },
+  heroGreeting: {
+    fontSize: 13,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 12,
+  },
+  heroTitle: {
+    fontSize: 32,
+    fontWeight: '800',
+    letterSpacing: -1,
+  },
+  heroRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 6,
+    marginTop: 8,
+    marginBottom: 16,
   },
-  titleText: {
-    fontSize: 32,
-    fontWeight: '700',
-    color: '#1A1A24',
-    letterSpacing: -0.5,
-  },
-  badge: {
-    backgroundColor: '#0F6EFF',
+  heroBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 20,
+    borderRadius: 10,
+    marginRight: 6,
   },
-  badgeText: {
-    color: '#FFF',
-    fontSize: 18,
-    fontWeight: '700',
+  heroBadgeText: {
+    fontSize: 16,
+    fontWeight: '800',
+    letterSpacing: 0.5,
   },
-  subtitleText: {
-    marginTop: 12,
+  heroSubtitle: {
     fontSize: 14,
-    color: '#6E7781',
+    lineHeight: 22,
     fontWeight: '500',
   },
   prominentCard: {

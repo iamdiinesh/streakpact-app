@@ -13,6 +13,7 @@ export default function EditProfileScreen({ onNavigate }: EditProfileScreenProps
   const [fullName, setFullName] = useState('Marilyn Monroe');
   const [email, setEmail] = useState('marilyn@example.com');
   const [birthday, setBirthday] = useState('August 14, 1998');
+  const [gender, setGender] = useState('Female');
 
   const handleSave = () => {
     if (onNavigate) onNavigate('profile');
@@ -84,6 +85,22 @@ export default function EditProfileScreen({ onNavigate }: EditProfileScreenProps
                 placeholder="e.g. August 14, 1998"
                 placeholderTextColor={colors.textMuted}
               />
+            </View>
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={[styles.inputLabel, { color: colors.text }]}>Gender</Text>
+            <View style={{ flexDirection: 'row', gap: 12 }}>
+              {['Female', 'Male', 'Other'].map(g => (
+                <TouchableOpacity 
+                  key={g} 
+                  style={[styles.genderButton, gender === g ? { backgroundColor: colors.primary, borderColor: colors.primary } : { backgroundColor: colors.card, borderColor: colors.border }]}
+                  onPress={() => setGender(g)}
+                >
+                  <Ionicons name={g === 'Female' ? 'female' : (g === 'Male' ? 'male' : 'person')} size={16} color={gender === g ? '#FFF' : colors.textMuted} style={{ marginRight: 6 }} />
+                  <Text style={[styles.genderText, { color: gender === g ? '#FFF' : colors.text }]}>{g}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
 
@@ -198,5 +215,18 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 16,
     fontWeight: '700',
+  },
+  genderButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  genderText: {
+    fontSize: 15,
+    fontWeight: '600',
   },
 });
