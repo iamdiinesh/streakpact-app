@@ -1,12 +1,27 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Dimensions, Image } from 'react-native';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useTheme } from '../theme/ThemeContext';
 
 interface AchievementsScreenProps {
   onNavigate?: (screen: 'home' | 'profile' | 'createPact' | 'friends' | 'achievements' | 'monthlyBadges') => void;
 }
+
+const MONTHLY_BADGES = [
+  { id: 'jan', title: 'New Beginnings', month: 'January', image: require('../../assets/badges/jan.png') },
+  { id: 'feb', title: 'Growth Bloom', month: 'February', image: require('../../assets/badges/feb.png') },
+  { id: 'mar', title: 'Rising Sun', month: 'March', image: require('../../assets/badges/mar.png') },
+  { id: 'apr', title: 'Flow State', month: 'April', image: require('../../assets/badges/apr.png') },
+  { id: 'may', title: 'Rooted Strength', month: 'May', image: require('../../assets/badges/may.png') },
+  { id: 'jun', title: 'Radiant Energy', month: 'June', image: require('../../assets/badges/jun.png') },
+  { id: 'jul', title: 'Peak Performance', month: 'July', image: require('../../assets/badges/jul.png') },
+  { id: 'aug', title: 'Unwavering Light', month: 'August', image: require('../../assets/badges/aug.png') },
+  { id: 'sep', title: 'Harvest Focus', month: 'September', image: require('../../assets/badges/sep.png') },
+  { id: 'oct', title: 'Transformation', month: 'October', image: require('../../assets/badges/oct.png') },
+  { id: 'nov', title: 'Steady Path', month: 'November', image: require('../../assets/badges/nov.png') },
+  { id: 'dec', title: 'Brilliant Achievement', month: 'December', image: require('../../assets/badges/dec.png') },
+];
 
 export default function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
   const { theme, colors } = useTheme();
@@ -68,29 +83,17 @@ export default function AchievementsScreen({ onNavigate }: AchievementsScreenPro
             </TouchableOpacity>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 16 }}>
-            <View style={[styles.badgeCard, { backgroundColor: colors.card, shadowColor: theme === 'dark' ? 'transparent' : '#000' }]}>
-              <View style={[styles.badgeIconCircle, { backgroundColor: 'rgba(245, 158, 11, 0.1)' }]}>
-                <FontAwesome5 name="fire-alt" size={24} color="#F59E0B" />
+            {MONTHLY_BADGES.slice(0, 5).map((badge) => (
+              <View key={badge.id} style={[styles.monthlyBadgeCardScroll, { backgroundColor: colors.card, shadowColor: theme === 'dark' ? 'transparent' : '#000' }]}>
+                <View style={styles.badgeCoinContainer}>
+                  <Image source={badge.image} style={styles.monthlyBadgeImage} resizeMode="cover" />
+                  <View style={styles.glare} />
+                  <View style={styles.innerRing} />
+                </View>
+                <Text style={[styles.monthlyBadgeMonth, { color: colors.primary }]}>{badge.month}</Text>
+                <Text style={[styles.monthlyBadgeTitle, { color: colors.text }]} numberOfLines={2}>{badge.title}</Text>
               </View>
-              <Text style={[styles.badgeTitle, { color: colors.text }]}>7-Day Streak</Text>
-              <Text style={styles.badgeDate}>May 12, 2026</Text>
-            </View>
-            
-            <View style={[styles.badgeCard, { backgroundColor: colors.card, shadowColor: theme === 'dark' ? 'transparent' : '#000' }]}>
-              <View style={[styles.badgeIconCircle, { backgroundColor: 'rgba(16, 185, 129, 0.1)' }]}>
-                <MaterialCommunityIcons name="handshake" size={28} color="#10B981" />
-              </View>
-              <Text style={[styles.badgeTitle, { color: colors.text }]}>First Pact</Text>
-              <Text style={styles.badgeDate}>May 10, 2026</Text>
-            </View>
-
-            <View style={[styles.badgeCard, { backgroundColor: colors.card, shadowColor: theme === 'dark' ? 'transparent' : '#000' }]}>
-              <View style={[styles.badgeIconCircle, { backgroundColor: 'rgba(59, 130, 246, 0.1)' }]}>
-                <Ionicons name="water" size={28} color="#3B82F6" />
-              </View>
-              <Text style={[styles.badgeTitle, { color: colors.text }]}>Hydro Homie</Text>
-              <Text style={styles.badgeDate}>June 2, 2026</Text>
-            </View>
+            ))}
           </ScrollView>
         </View>
 
@@ -276,6 +279,78 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#1A1A24',
     marginBottom: 16,
+  },
+  badgesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 16,
+  },
+  monthlyBadgeCardScroll: {
+    width: 140,
+    backgroundColor: '#FFF',
+    borderRadius: 20,
+    padding: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 4,
+    marginBottom: 8,
+  },
+  badgeCoinContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 12,
+    backgroundColor: '#FFF',
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  monthlyBadgeImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 40,
+  },
+  glare: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '45%',
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+  },
+  innerRing: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderBottomColor: 'rgba(0, 0, 0, 0.15)',
+    borderRightColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  monthlyBadgeMonth: {
+    fontSize: 12,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 4,
+  },
+  monthlyBadgeTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    textAlign: 'center',
+    lineHeight: 18,
   },
   badgeCard: {
     backgroundColor: '#FFF',

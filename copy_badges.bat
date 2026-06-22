@@ -1,0 +1,11 @@
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\apr_badge_1782106629181.png" "c:\streakpact-app\assets\badges\apr.png" /Y
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\aug_badge_1782106675450.png" "c:\streakpact-app\assets\badges\aug.png" /Y
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\dec_badge_1782106715357.png" "c:\streakpact-app\assets\badges\dec.png" /Y
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\feb_badge_1782106607785.png" "c:\streakpact-app\assets\badges\feb.png" /Y
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\jul_badge_1782106663020.png" "c:\streakpact-app\assets\badges\jul.png" /Y
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\jun_badge_1782106651361.png" "c:\streakpact-app\assets\badges\jun.png" /Y
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\mar_badge_1782106617157.png" "c:\streakpact-app\assets\badges\mar.png" /Y
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\may_badge_1782106641728.png" "c:\streakpact-app\assets\badges\may.png" /Y
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\nov_badge_1782106706569.png" "c:\streakpact-app\assets\badges\nov.png" /Y
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\oct_badge_1782106697852.png" "c:\streakpact-app\assets\badges\oct.png" /Y
+copy "C:\Users\DINESH GUPTA\.gemini\antigravity-ide\brain\c3805b0f-5e20-433a-b8d7-bf3f678022d0\sep_badge_1782106684994.png" "c:\streakpact-app\assets\badges\sep.png" /Y
