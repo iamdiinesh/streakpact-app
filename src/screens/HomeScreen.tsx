@@ -1,8 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Dimensions, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Dimensions, Image, Modal, Animated, Easing } from 'react-native';
 import { Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useTheme } from '../theme/ThemeContext';
+
+let hasShownWelcome = false;
+
+export const resetWelcomeModal = () => {
+  hasShownWelcome = false;
+};
 
 
 interface HomeScreenProps {
@@ -14,6 +20,13 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
   const scrollViewRef = useRef<ScrollView>(null);
   const { width } = Dimensions.get('window');
   const cardWidth = width - 48;
+  const [showWelcome, setShowWelcome] = useState(!hasShownWelcome);
+
+  useEffect(() => {
+    if (showWelcome) {
+      hasShownWelcome = true;
+    }
+  }, [showWelcome]);
 
   const [activeTasks, setActiveTasks] = useState([
     {
@@ -185,9 +198,168 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
           <Ionicons name="person-outline" size={24} color={colors.textMuted} />
         </TouchableOpacity>
       </View>
+
+      <WelcomeModal visible={showWelcome} onClose={() => setShowWelcome(false)} colors={colors} />
     </SafeAreaView>
   );
 }
+
+const WelcomeModal = ({ visible, onClose, colors }: any) => {
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const glowAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (visible) {
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 1200, // Slower, more majestic entrance
+        delay: 800, // Longer wait before the logo pops up
+        easing: Easing.out(Easing.back(1.2)), // Smooth overshoot bounce
+        useNativeDriver: false,
+      }).start();
+
+      Animated.loop(
+        Animated.timing(rotateAnim, {
+          toValue: 1,
+          duration: 3500,
+          useNativeDriver: false,
+        })
+      ).start();
+
+      // Fast Fire Glow Flicker
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(glowAnim, { toValue: 1, duration: 120, useNativeDriver: false }),
+          Animated.timing(glowAnim, { toValue: 0.5, duration: 90, useNativeDriver: false }),
+          Animated.timing(glowAnim, { toValue: 0.9, duration: 130, useNativeDriver: false }),
+          Animated.timing(glowAnim, { toValue: 0.4, duration: 110, useNativeDriver: false }),
+        ])
+      ).start();
+
+      const timer = setTimeout(() => {
+        closeModal();
+      }, 5500); // Extended from 4500 to account for the slower animation
+      return () => clearTimeout(timer);
+    }
+  }, [visible]);
+
+  const closeModal = () => {
+    Animated.timing(scaleAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: false,
+    }).start(() => onClose());
+  };
+
+  if (!visible) return null;
+
+  const rotateY = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+  });
+
+  const popScale = scaleAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1.3]
+  });
+
+  const glowScale = glowAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.95, 1.15]
+  });
+
+  const glowOpacity = glowAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.6, 1]
+  });
+
+  const translateY = scaleAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [400, 0]
+  });
+
+  return (
+    <Modal transparent animationType="fade" visible={visible}>
+      <View style={styles.welcomeOverlay}>
+        <View style={styles.welcomeBg} />
+        <View style={styles.welcomeContent}>
+          <Text style={styles.welcomeTitle}>Welcome to Streakpact!</Text>
+          <Text style={styles.welcomeSubtitle}>Keep your promises alive.</Text>
+
+          <Animated.View style={[styles.logo3dContainer, { transform: [{ translateY }] }]}>
+            {/* Soft Flame Aura (Concentric Gradient Fake) */}
+            <Animated.View 
+              style={[
+                styles.fireGlowContainer,
+                {
+                  opacity: glowOpacity,
+                  transform: [{ scale: glowScale }]
+                }
+              ]} 
+            >
+              <View style={[styles.fireGlowLayer, { width: 170, height: 170, backgroundColor: 'rgba(255, 120, 0, 0.5)' }]} />
+              <View style={[styles.fireGlowLayer, { width: 210, height: 210, backgroundColor: 'rgba(255, 80, 0, 0.25)' }]} />
+              <View style={[styles.fireGlowLayer, { width: 260, height: 260, backgroundColor: 'rgba(255, 50, 0, 0.1)' }]} />
+              <View style={[styles.fireGlowLayer, { width: 320, height: 320, backgroundColor: 'rgba(255, 20, 0, 0.04)' }]} />
+            </Animated.View>
+
+            {[...Array(12)].map((_, i) => (
+              <Animated.View
+                key={`logo-edge-${i}`}
+                style={[
+                  styles.logoEdge,
+                  {
+                    backgroundColor: '#0F6EFF',
+                    transform: [
+                      { perspective: 800 },
+                      { scale: popScale },
+                      { rotateY: rotateY },
+                      { translateZ: -i * 2 }
+                    ]
+                  }
+                ]}
+              />
+            ))}
+
+            <Animated.View
+              style={[
+                styles.logoFace,
+                {
+                  transform: [
+                    { perspective: 800 },
+                    { scale: popScale },
+                    { rotateY: rotateY },
+                    { translateZ: -24 },
+                    { rotateY: '180deg' }
+                  ]
+                }
+              ]}
+            >
+              <Image source={require('../../assets/logo.png')} style={styles.logoImg} resizeMode="cover" />
+            </Animated.View>
+
+            <Animated.View
+              style={[
+                styles.logoFace,
+                {
+                  transform: [
+                    { perspective: 800 },
+                    { scale: popScale },
+                    { rotateY: rotateY },
+                    { translateZ: 0 }
+                  ]
+                }
+              ]}
+            >
+              <Image source={require('../../assets/logo.png')} style={styles.logoImg} resizeMode="cover" />
+            </Animated.View>
+          </Animated.View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -448,5 +620,72 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 16,
     elevation: 8,
+  },
+  welcomeOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  welcomeBg: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    backdropFilter: 'blur(10px)',
+  },
+  welcomeContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+    width: '100%',
+  },
+  welcomeTitle: {
+    color: '#FFF',
+    fontSize: 32,
+    fontWeight: '800',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  welcomeSubtitle: {
+    color: '#60A5FA',
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 80,
+  },
+  logo3dContainer: {
+    width: 160,
+    height: 160,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fireGlowContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fireGlowLayer: {
+    position: 'absolute',
+    borderRadius: 999,
+  },
+  logoEdge: {
+    position: 'absolute',
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+  },
+  logoFace: {
+    position: 'absolute',
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    backgroundColor: '#0F6EFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backfaceVisibility: 'hidden',
+    overflow: 'hidden',
+  },
+  logoImg: {
+    width: '100%',
+    height: '100%',
+    transform: [{ scale: 1.8 }],
   },
 });

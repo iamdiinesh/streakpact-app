@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ThemeProvider } from './src/theme/ThemeContext';
-import HomeScreen from './src/screens/HomeScreen';
+import HomeScreen, { resetWelcomeModal } from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
@@ -30,7 +30,16 @@ function AppContent() {
   }
 
   if (currentScreen === 'settings') {
-    return <SettingsScreen onNavigate={setCurrentScreen} onLogout={() => setIsLoggedIn(false)} />;
+    return (
+      <SettingsScreen 
+        onNavigate={setCurrentScreen} 
+        onLogout={() => {
+          setIsLoggedIn(false);
+          setCurrentScreen('home');
+          resetWelcomeModal();
+        }} 
+      />
+    );
   }
 
   if (currentScreen === 'feedback') {
